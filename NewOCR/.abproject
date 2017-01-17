@@ -1,0 +1,45 @@
+{
+  "ProjectName": "NewOCR",
+  "ProjectGuid": "c9da3999-defc-4e1f-a16b-078b90086b26",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.NewOCR",
+  "DisplayName": "NewOCR",
+  "Author": "",
+  "Description": "NewOCR",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "4.0.0",
+  "AndroidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "true",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING",
+    "ID_CAP_WEBBROWSERCOMPONENT"
+  ],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{cc3ed730-5a91-4e59-b156-eb7ee2334499}",
+  "WP8ProductID": "{2faaba8f-275e-43f4-9a2f-5ac5cb8accec}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.NewOCR",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
