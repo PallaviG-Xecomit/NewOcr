@@ -2,7 +2,7 @@
   "ProjectName": "NewOCR",
   "ProjectGuid": "c9da3999-defc-4e1f-a16b-078b90086b26",
   "projectVersion": 1,
-  "AppIdentifier": "com.telerik.NewOCR",
+  "AppIdentifier": "io.anyline.examples.cordova",
   "DisplayName": "NewOCR",
   "Author": "",
   "Description": "NewOCR",
