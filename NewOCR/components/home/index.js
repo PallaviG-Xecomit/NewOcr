@@ -1,16 +1,55 @@
 'use strict';
-
+var analogScanCount; 
 app.home = kendo.observable({
     onShow: function() {},
     afterShow: function() {
-        app.home.takeNewRead();
+        app.home.scanQRCode();                
     }
 });
+
+app.home.scanQRCode = function()
+{
+  try {cordova.plugins.barcodeScanner.scan(
+      function (result) {
+         var jResult; 
+        $("#aScan").hide(); 
+        $("#trInput").hide();
+        $("#trSave").hide();  
+        $("#trNewRead").hide();
+        $("#trContinue").show(); 
+        /*jResult = $.parseJSON(result.text)  
+        $.each(jResult, function( key, val ) {
+            $.each(jResult, function( key, val ) {
+            alert(key);
+  }); 
+  }); */
+        $("#txtTextContinue").val("Result:" +result.text);      
+        $("#output").html($("#txtTextContinue").val());          
+        analogScanCount = 0;  
+      },
+      function (error) {
+          alert("Scanning failed: " + error);
+      },
+      {
+          preferFrontCamera : false, // iOS and Android
+          showFlipCameraButton : true, // iOS and Android
+          showTorchButton : true, // iOS and Android
+          torchOn: false, // Android, launch with the torch switched on (if available)
+          prompt : "Place a barcode inside the scan area", // Android
+          resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+          formats : "all but PDF_417 and RSS_EXPANDED", // default: all but PDF_417 and RSS_EXPANDED
+          orientation : "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
+          disableAnimations : true, // iOS
+          disableSuccessBeep: false // iOS
+      }
+   );} catch(e){ alert(e);}
+}
 
 app.home.takeNewRead = function()
 {
     $("#trNewRead").hide();
     $("#scanCount").val('0');
+    $("#trContinue").hide(); 
     app.home.localScan();
 
     var div = document.getElementById('output');
@@ -19,6 +58,8 @@ app.home.takeNewRead = function()
     }
 
 }
+
+
 
 app.home.localScan = function()
 {
@@ -86,8 +127,10 @@ app.home.scanFailure = function (error)
 } 
 
 app.home.addResult = function()
-{
+{    
     var currentText = $("#txtText").val();
+    if(analogScanCount==0)
+    $("#output").html($("#output").html()+' </br><b>'+$("#txtTextContinue").val()+'</b>');
     var prevText = $("#output").html();
     if(prevText == "")
         prevText = "</br><div style='font-size: large; font-weight: bold;'>Result</div>"
@@ -99,10 +142,12 @@ app.home.addResult = function()
     //alert(cntNum);
     $("#txtText").val("");
     $("#trSave").hide();
+
     var div = document.getElementById('imgScanned');
     while (div.hasChildNodes()) {
         div.removeChild(div.lastChild);
     }
+    analogScanCount++;
     if(cntNum < 5)
         app.home.localScan();
     else
