@@ -1,3 +1,23 @@
+.trAnalysis
+{
+    width:100%;
+    word-wrap: break-word;
+}
+
+.trQRScanButton
+{
+    font-weight:bold; width:150px; height:50px; 
+}
+
+
+
+
+.km-arrow-e:after,
+.km-arrow-e:before
+{
+    content: "\e0c6";
+}
+
 /* Colors */
 /* Theme overides - .box-shadow is deleted */
 .km-nova h1,

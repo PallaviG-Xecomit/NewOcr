@@ -5,9 +5,17 @@
       "type": "kendo-ui-mobile:view",
       "name": "home",
       "components": [],
-      "title": "Home View",
+      "title": "Scan",
       "addToNavigation": true,
-      "icon": "home"
+      "icon": "camera"
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "logView",
+      "components": [],
+      "title": "Analysis",
+      "addToNavigation": true,
+      "icon": "organize"
     }
   ],
   "dataProviders": [],

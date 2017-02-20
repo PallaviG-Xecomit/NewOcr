@@ -3,9 +3,9 @@
   "ProjectGuid": "c9da3999-defc-4e1f-a16b-078b90086b26",
   "projectVersion": 1,
   "AppIdentifier": "io.anyline.examples.cordova",
-  "DisplayName": "NewOCR",
+  "DisplayName": "XScanner",
   "Author": "",
-  "Description": "NewOCR",
+  "Description": "XScanner",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [

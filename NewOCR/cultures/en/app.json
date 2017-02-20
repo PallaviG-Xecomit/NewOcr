@@ -5,6 +5,9 @@
     "qrCodeScan": "Scan"
   },
   "home": {
-    "title": "Home View"
+    "title": "Scan"
+  },
+  "logView": {
+    "title": "Analysis"
   }
 }

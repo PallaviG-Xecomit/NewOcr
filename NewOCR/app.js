@@ -20,6 +20,7 @@
 
     var bootstrap = function() {
         $(function() {
+            dbSetup();
             app.mobileApp = new kendo.mobile.Application(document.body, {
                 transition: 'slide',
                 skin: 'nova',
@@ -29,18 +30,25 @@
             kendo.bind($('.navigation-link-text'), app.navigation.viewModel);
         });
     };
-
+    var dbSetup = function()
+    {
+        app.DALMain.init();
+        app.DALLocations.dropTable();
+        app.DALLocations.createTable();
+        app.DALMeterReadings.dropTable();
+        app.DALMeterReadings.createTable();
+    }
     $(document).ready(function() {
 
         var navigationShowMoreView = $('#navigation-show-more-view').find('ul'),
             allItems = $('#navigation-container-more').find('a'),
             navigationShowMoreContent = '';
 
-            allItems.each(function(index) {
-                navigationShowMoreContent += '<li>' + allItems[index].outerHTML + '</li>';
-            });
+        allItems.each(function(index) {
+            navigationShowMoreContent += '<li>' + allItems[index].outerHTML + '</li>';
+        });
 
-             navigationShowMoreView.html(navigationShowMoreContent);
+        navigationShowMoreView.html(navigationShowMoreContent);
         kendo.bind($('#navigation-show-more-view'), app.showMore.viewModel);
 
         app.notification = $("#notify");

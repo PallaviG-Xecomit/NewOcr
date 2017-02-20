@@ -1,0 +1,50 @@
+<div data-role="view" data-title="View" data-layout="main" data-model="app.logView" data-show="app.logView.onShow" data-after-show="app.logView.afterShow" id="logViewScreen" class="screen">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text">
+
+            <span data-bind="text: strings.logView.title"></span>
+
+        </div>
+    </header>
+    <a class="trQRScanButton" style="padding-top: 15px;float: right;background: #dfe1e2;color: cadetblue;width: 175px;margin-top: 10px; margin-right: 10px;" 
+            onclick="app.fileHandler.uploadToServer()" data-role="button" data-icon="arrow-e">Upload to server</a>
+     
+    
+    <div id="readingsList" style="margin-top: 20%;">
+        
+    </div>
+    <script type="text/x-kendo-tmpl" id="readingsTemplate">
+        <div class="trAnalysis"><label>#: locationDetails #</label></div>
+        </br>
+        <div class="trAnalysis"><label>#: reading #</label></div>        
+    </script>
+
+    <div id='listview'>
+    </div>
+
+    <script id="customer-template" type="text/x-kendo-template">
+    <span>
+        <div style="float:left; width:50%">
+            <h2>${customerName}</h2>
+        </div>
+        <div style="float:right; width:50%">
+            #= renderNotesTemplate(data) #
+        </div>
+    </span>
+    </script>
+
+    <script id="notes-template" type="text/x-kendo-template">
+        <p>${notes}</p></b>
+        <p>${reading1}</p></b>
+        <p>${reading2}</p>
+    </script>
+
+
+    
+
+
+    <!-- START_CUSTOM_CODE_logView -->
+    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+
+    <!-- END_CUSTOM_CODE_logView -->
+</div>

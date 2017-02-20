@@ -4,7 +4,9 @@
 <head>
     <title></title>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=0.41, maximum-scale=1" />
+
     <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet">
 
     <link href="styles/overrides.css" rel="stylesheet">
@@ -15,10 +17,17 @@
     <script src="kendo/js/kendo.mobile.min.js"></script>
     <script src="app.js"></script>
 
-    
+    <script src="scripts/fileHandler.js"></script> 
+    <script src="scripts/DALMain.js"></script> 
+    <script src="scripts/DALLocations.js"></script>  
+    <script src="scripts/DALMeterReadings.js"></script>
+    <script src="scripts/commonScripts/commonFunctions.js"></script>    
+    <script src="components/home/index.js"></script>
+    <script src="components/logView/index.js"></script>
 </head>
 
 <body id="kendoUiMobileApp">
+    <script src="components/logView/index.js"></script>
     <script src="components/home/index.js"></script>
     <div data-role="layout" data-id="main">
         <header data-role="header">
@@ -28,7 +37,8 @@
         </header>
         <footer data-role="footer">
             <div data-role="tabstrip" id="navigation-container">
-                <a href="components/home/view.html" data-icon="home"><span class="navigation-link-text" data-bind="text: strings.home.title"></span></a>
+                <a href="components/home/view.html" data-icon="camera"><span class="navigation-link-text" data-bind="text: strings.home.title"></span></a>
+                <a href="components/logView/view.html" data-icon="organize"><span class="navigation-link-text" data-bind="text: strings.logView.title"></span></a>
             </div>
             <div id="navigation-container-more" style="display: none">
             </div>

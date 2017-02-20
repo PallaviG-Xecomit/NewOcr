@@ -7,55 +7,78 @@
         </div>
     </header>
     
-    
-
-    <table width="100%">
-        <tr id="aScan" style="display:none">
-            <td style="text-align: center;">
-                <hidden id="scanCount"></hidden>
-                <a style="background: deepskyblue; color:white" onclick="app.home.localScan()" data-role="button" data-icon="camera"></a>
+    <table width="100%" cellspacing="0" style="padding:5% 10% 2% 10%">
+        <tr>
+            <td style="text-align: center; ">
+                <div>
+                    <label id="lblQrRes"></lable>
+                    <a class="trQRScanButton" style="padding-top: 15px; background: #dfe1e2; color:cadetblue; " onclick="app.home.scanQRCode(false);" data-role="button" data-icon="camera">QR code</a>
+                </div>
             </td>
         </tr>
+    </table>
+    <table width="100%" cellspacing="0" style="padding:0% 10% 5% 10%">
+        <tr id="trQrScanHead">
+            <td style="text-align: center; border: 2px solid gray"  colspan="2" >
+                <label id="hdQrCodeRes"></label>
+                <div id="qrResultHeading" style="font-size: larger;font-weight: bold; "> 
+                    QR code readings                    
+                </div>  
+            </td>
+        </tr>
+        <tr id="trQrScan">
+            <td style="text-align: center; border-bottom: 2px solid gray;" colspan="2">
+                <div id="qrResult" style="text-align: left; padding-left: 10%; padding-top: 15px; padding-bottom: 15px;"> 
+                    
+                </div>                           
+            </td>
+        </tr>               
         <tr>
-            <td id="imgScanned">
+            <td id="imgScanned" style="text-align: center;" colspan="2">
                 
             </td>
         </tr>
         <tr id="trInput">
-            <td style="text-align: center;">
+            <td style="text-align: center;" colspan="2">
                 <div class="entranceFade third">
-                    <div class="header" style="font-size: large; font-weight: bold;">Scanned reading</div>
-                    <input type="number" id="txtText"/>                    
+                    <div class="header" style="margin-top:3%;font-size: large; font-weight: bold;">Readings</div>
+                    <input type="number" id="txtText" style="font-size: 17px;text-align: center;"/>                    
                 </div>
             </td>            
         </tr>
         <tr id="trSave">
-            <td style="text-align:center">
-                <a style="background: deepskyblue; color:white" onclick="app.home.addResult()" data-role="button">Save</a>
-                <a style="background: deepskyblue; color:white" onclick="app.home.cancelResult()" data-role="button">Retry</a>
+            <td style="text-align:center" colspan="2">
+                <a style="background: #dfe1e2; color:cadetblue; font-weight:bold" onclick="app.home.addResult()" data-role="button">Save</a>
+                <a style="background: #dfe1e2; color:cadetblue; font-weight:bold" onclick="app.home.cancelResult()" data-role="button">Retry</a>
             </td>
         </tr>
-        <tr>
-            <td style="text-align: center;">
-                <div id="output"></div>
+        <tr style="display:none;" id="trMeterType">
+            <td style="text-align: center;padding-bottom:10px; padding-top: 20px;">
+                <a style="background: #dfe1e2; color:cadetblue; font-weight:bold" onclick="app.home.takeNewRead(true)" data-role="button">Analog meter</a>
+            </td>
+            <td style="text-align: center;padding-bottom:10px; padding-top: 20px;">
+                <a style="background: #dfe1e2; color:cadetblue; font-weight:bold" onclick="app.home.takeNewRead(false)" data-role="button">Digital meter</a>
+            </td>
+        </tr>      
+        <tr id="trRdngHead">
+            <td style="text-align: center;" colspan="2">
+                <div id="outputHeading" style="margin-left: 20%; font-weight: bold; border: 2px solid gray; margin-right: 20%; margin-top: 5%;">
+                    Meter readings
+                </div>
             </td>
         </tr>
+        <tr id="trRdngVal">
+            <td style="text-align: center;" colspan="2">
+                <div id="output" style="padding-bottom: 10px;border-bottom: 1px solid gray; margin: 0% 30% 5% 30%;">
+                    
+                </div>
+            </td>
+        </tr>   
         <tr id="trNewRead">
-            <td style="text-align: center">
-                <a style="background: deepskyblue; color:white" onclick="app.home.newScan()" data-role="button">New readings</a>
-            </td>
-        </tr>
-        <tr style="display:none;" id="trContinue">
-            <td style="text-align: center;">
-                <textarea style="display:none;" height="10%" id="txtTextContinue"></textarea><br/>
-                <a style="background: deepskyblue; color:white" onclick="app.home.takeNewRead()" data-role="button">Continue</a>
+            <td style="text-align: center" colspan="2">
+                <a style="background: #dfe1e2; color:cadetblue; font-weight:bold" onclick="app.home.addToLog()" data-role="button">Save & continue</a>                
             </td>
         </tr>
     </table>
 
-
-    <!-- START_CUSTOM_CODE_home -->
-    <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-
-    <!-- END_CUSTOM_CODE_home -->
 </div>

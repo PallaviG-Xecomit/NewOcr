@@ -1,74 +1,254 @@
 'use strict';
 var analogScanCount; 
+var jObj;
+var isAnalog;
+
 app.home = kendo.observable({
     onShow: function() {},
     afterShow: function() {
-        app.home.scanQRCode();                
+        jObj = new Object();
+        app.home.scanQRCode(true);
     }
 });
 
-app.home.scanQRCode = function()
+app.home.showHideReadings = function(shouldShow)
 {
-  try {cordova.plugins.barcodeScanner.scan(
-      function (result) {
-         var jResult; 
-        $("#aScan").hide(); 
+    if(!shouldShow){
+        $("#trRdngHead").hide();
+        $("#trRdngVal").hide();
+        $("#trQrScan").hide();
+        $("#trQrScanHead").hide()
+        $("#trMeterType").hide();        
+    }   
+    else{
         $("#trInput").hide();
-        $("#trSave").hide();  
-        $("#trNewRead").hide();
-        $("#trContinue").show(); 
-        /*jResult = $.parseJSON(result.text)  
-        $.each(jResult, function( key, val ) {
-            $.each(jResult, function( key, val ) {
-            alert(key);
-  }); 
-  }); */
-        $("#txtTextContinue").val("Result:" +result.text);      
-        $("#output").html($("#txtTextContinue").val());          
-        analogScanCount = 0;  
-      },
-      function (error) {
-          alert("Scanning failed: " + error);
-      },
-      {
-          preferFrontCamera : false, // iOS and Android
-          showFlipCameraButton : true, // iOS and Android
-          showTorchButton : true, // iOS and Android
-          torchOn: false, // Android, launch with the torch switched on (if available)
-          prompt : "Place a barcode inside the scan area", // Android
-          resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
-          formats : "all but PDF_417 and RSS_EXPANDED", // default: all but PDF_417 and RSS_EXPANDED
-          orientation : "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
-          disableAnimations : true, // iOS
-          disableSuccessBeep: false // iOS
-      }
-   );} catch(e){ alert(e);}
+        $("#trQrScan").show();
+        $("#trQrScanHead").show()
+        $("#trMeterType").show();
+    }   
 }
 
-app.home.takeNewRead = function()
+app.home.readyForQr = function()
 {
+    $("#trInput").hide();
+    $("#trSave").hide();  
     $("#trNewRead").hide();
-    $("#scanCount").val('0');
-    $("#trContinue").hide(); 
-    app.home.localScan();
+    app.home.clearMeterReadings();    
+}
 
-    var div = document.getElementById('output');
-    while (div.hasChildNodes()) {
-        div.removeChild(div.lastChild);
+app.home.clearMeterReadings = function()
+{
+    var divMeter = document.getElementById('output');
+    while (divMeter.hasChildNodes()) {
+        divMeter.removeChild(divMeter.lastChild);
     }
-
 }
 
 
 
-app.home.localScan = function()
+app.home.scanQRCode = function(disPrev)
 {
     try
     {
-        $("#aScan").hide(); 
+        $("#lblQrRes").val();
+        if(!disPrev)
+        {
+            if($("#qrResult").text().trim() != "")
+                disPrev = confirm("Lasted scanned results are not save. Do you want to discard those result?");
+        }
+        if(!disPrev && $("#qrResult").text().trim() != "")
+            return;
+
+        app.home.clearQrReadings();
+        app.home.readyForQr();
+        app.home.showHideReadings(false);
+    }
+    catch(error)
+    {
+        alert(error);
+    }
+    if (!window.navigator.simulator) { 
+        try {
+            cordova.plugins.barcodeScanner.scan(
+            app.home.processQrResult,
+            app.home.qrError,
+            {
+                preferFrontCamera : false, // iOS and Android
+                showFlipCameraButton : true, // iOS and Android
+                showTorchButton : true, // iOS and Android
+                torchOn: false, // Android, launch with the torch switched on (if available)
+                prompt : "Place a barcode inside the scan area", // Android
+                resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+                formats : "all but PDF_417 and RSS_EXPANDED", // default: all but PDF_417 and RSS_EXPANDED
+                orientation : "default", // Android only (portrait|landscape), default unset so it rotates with the device
+                disableAnimations : true, // iOS
+                disableSuccessBeep: false // iOS
+            }
+        );} catch(e){ 
+            //alert(e);
+            alert("Error occured while scanning QR code. Please try again.");
+            }
+    }
+    else
+    {
+        app.home.showDummyQRResult();
+    }
+}
+
+app.home.qrError = function (error) {
+          //alert("Scanning failed: " + error);
+          alert("Error occured while scanning QR code. Please try again.");
+      }
+
+app.home.showDummyQRResult = function()
+{
+    
+    var lblHeading = '';
+    $("#qrResult").html(lblHeading);
+    
+    var jResult; 
+    $("#trMeterType").show();
+
+            var resText = 'sample text sample text sample text sample text';
+
+            $("#qrText").val(resText);
+
+            var isJson = true;
+            //alert($.type(resText));
+
+            try {jResult = $.parseJSON(resText);}
+            catch(e) {isJson = false;}
+            
+            if(isJson)
+            {
+                $.each(jResult, function( key, val ) {
+                    var entry = val[0];                
+                    for (name in entry) {
+                        if (entry.hasOwnProperty(name)) {
+                            var lblCaption = '<label>' + name + ':</label>';
+                            var lblValue = '<label><b>' + entry[name] + '</label></b></br>';
+                            var finalAttr =  lblCaption + lblValue;
+                            $("#qrResult").html($("#qrResult").html()+finalAttr);
+                            app.home.showHideReadings(true);
+                            jObj[name] = entry[name];
+                        }
+                    }
+                }); 
+            }
+            else
+            {
+                app.home.showHideReadings(true);
+                $("#qrResult").html($("#qrResult").html()+resText);
+            }
+            
+            analogScanCount = 0; 
+}
+
+app.home.processQrResult = function (result) {
+
+        //app.home.getFormatedText("qrResult");
+        if(result.text == "")
+        {
+            alert("Please try again.");
+        }
+        else
+        {
+
+            var lblHeading = '';
+            $("#qrResult").html(lblHeading);
+
+            var jResult; 
+            
+            $("#trMeterType").show();
+        
+            $("#qrText").val(result.text);
+
+            var isJson = true;
+            //alert(result.text);
+
+            try {jResult = $.parseJSON(result.text);}
+            catch(e) {isJson = false;}
+            //alert(isJson);
+            if(isJson)
+            {
+                $.each(jResult, function( key, val ) {
+                    var entry = val[0];                
+                    for (name in entry) {
+                        if (entry.hasOwnProperty(name)) {
+                            var lblCaption = '<label>' + name + ':</label>';
+                            var lblValue = '<label><b>' + entry[name] + '</label></b></br>';
+                            var finalAttr =  lblCaption + lblValue;
+                            $("#qrResult").html($("#qrResult").html()+finalAttr);
+                            app.home.showHideReadings(true);
+                            jObj[name] = entry[name];
+
+                        }
+                    }
+                }); 
+            }
+            else
+            {
+                app.home.showHideReadings(true);
+                $("#qrResult").html($("#qrResult").html()+result.text);
+            }
+            
+            analogScanCount = 0; 
+        } 
+      }
+
+app.home.takeNewRead = function(meterType)
+{
+    isAnalog = meterType;
+    $("#trNewRead").hide();
+    $("#scanCount").val('0');
+    $("#trMeterType").hide(); 
+    if(window.navigator.simulator)
+        app.home.dummyMeterScan();
+    else
+        app.home.meterScan(isAnalog);
+}
+
+app.home.dummyMeterScan = function()
+{
+    try
+    {
+        $("#trInput").show();
+        //$("#trSave").hide();  
+        
+        $("#txtText").val("123456789012345");
+        $("#trSave").show();        
+        try{
+        var div = document.getElementById('imgScanned');
+        while (div.hasChildNodes()) {
+            div.removeChild(div.lastChild);
+        }
+        div.innerHTML = "<p>"
+            + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
+            + "</p>"
+            + div.innerHTML;
+        }
+        catch(error)
+        {
+            //alert(error);
+        }
+
+    }
+    catch(Error)
+    {
+        alert(Error);
+    }
+}
+
+app.home.meterScan = function(isAnalog)
+{
+    try
+    {
         $("#trInput").show();
         $("#trSave").hide();  
-        cordova.exec(app.home.scanSuccess, app.home.scanFailure, "AnylineSDK", 'ANALOG_METER', app.home.energyConfig);        
+        if(isAnalog)
+            cordova.exec(app.home.scanSuccess, app.home.scanFailure, "AnylineSDK", 'ANALOG_METER', app.home.energyConfig);
+        else
+            cordova.exec(app.home.scanSuccess, app.home.scanFailure, "AnylineSDK", 'DIGITAL_METER', app.home.energyConfig);
     }
     catch(Error)
     {
@@ -114,8 +294,7 @@ app.home.scanFailure = function (error)
         //do stuff when user has canceled
         // this can be used as an indicator that the user finished the scanning if canclelOnResult is false
         console.log("Energy scanning canceled");
-        $("#aScan").show();  
-        $("#trInput").hide();  
+        app.home.showHideReadings(true);
         var div = document.getElementById('imgScanned');
         while (div.hasChildNodes()) {
             div.removeChild(div.lastChild);
@@ -123,23 +302,31 @@ app.home.scanFailure = function (error)
         return;
     }
 
-    alert("Error:" + error);
+    //alert("Error:" + error);
+    alert("Error occured while scanning meter reading. Please try again.")
 } 
 
 app.home.addResult = function()
 {    
     var currentText = $("#txtText").val();
-    if(analogScanCount==0)
-    $("#output").html($("#output").html()+' </br><b>'+$("#txtTextContinue").val()+'</b>');
+    
     var prevText = $("#output").html();
-    if(prevText == "")
-        prevText = "</br><div style='font-size: large; font-weight: bold;'>Result</div>"
+    
     $("#output").html(prevText +"</br>"+currentText);
-    var cntText = $("#scanCount").val();
+    
+    $("#trRdngHead").show();
+    $("#trRdngVal").show();
+
+    var cntText = analogScanCount;
     var cntNum = parseInt(cntText);
-    cntNum = cntNum + 1;
+    
+    cntNum = cntNum + 1;    
+    
+    //jObj["reading"+cntNum.toString()] = $("#txtText").val();
+    
     $("#scanCount").val(cntNum.toString());
-    //alert(cntNum);
+    
+    $("#MeterText").val($("#MeterText").val()+","+$("#txtText").val());
     $("#txtText").val("");
     $("#trSave").hide();
 
@@ -148,30 +335,43 @@ app.home.addResult = function()
         div.removeChild(div.lastChild);
     }
     analogScanCount++;
+    //alert(cntNum);
     if(cntNum < 5)
-        app.home.localScan();
+    {
+        if(window.navigator.simulator)
+            app.home.dummyMeterScan();
+        else
+            app.home.meterScan(isAnalog);        
+    }
     else
     {
         $("#trNewRead").show();
         $("#trInput").hide();
+        //alert(jObj.length);
+         var finalJ = JSON.stringify(jObj);
+         //alert("from");
+         
     }
 
 };
 
-app.home.newScan = function()
+app.home.clearQrReadings = function()
 {
-    app.home.takeNewRead();
+    var divQR = document.getElementById('qrResult');
+    while (divQR.hasChildNodes()) {
+        divQR.removeChild(divQR.lastChild);
+    }    
 }
 
 app.home.cancelResult = function()
 {
-    app.home.localScan();
+    if(window.navigator.simulator)
+        app.home.dummyMeterScan();
+    else
+        app.home.meterScan(isAnalog);
 }
 
 app.home.scanSuccess = function (result) {
-        //this is called for every energy scan result
-        //the result is a json-object containing the reading the meter type and a path to a cropped and a full image.
-        //alert("Energy result: " + JSON.stringify(result));
         
         $("#txtText").val(result.reading);
         $("#trSave").show();        
@@ -187,12 +387,73 @@ app.home.scanSuccess = function (result) {
         }
         catch(error)
         {
-            alert(error);
+            //alert(error);
         }
 
         //document.getElementById("details_scan_modes").removeAttribute("open");
         //document.getElementById("details_results").setAttribute("open", "");
 }
+    
+app.home.addToLog= function()
+{
+    try{
+
+        var finalJ = JSON.stringify(jObj);
+        if(finalJ == '{}')
+            {
+                var qrRes = $("#qrResult").text();
+                finalJ = qrRes;
+            }
+         //alert("from");
+         //app.fileHandler.writeToFile("Result:" +finalJ);
+
+        //var txtQR = $("#qrResult").text();
+        //app.home.getFormatedText($("#qrResult"));
+        //alert(finalJ);
+        app.DALLocations.addResult(finalJ, function(addedLocId){
+            var txtOutPut = $("#output").html();
+            var meterReadings = txtOutPut.split("<br>");
+            //alert(meterReadings.length);
+            var i=0;
+            for(i=0; i< meterReadings.length; i++)
+            {
+                if(meterReadings[i].trim() != "")
+                    {
+                        //alert(meterReadings[i]);
+
+                        app.DALMeterReadings.addResult(addedLocId, meterReadings[i], function(readingId){
+                            
+                            /*if(readingId == meterReadings.length - 1)
+                            {
+                                var cont = confirm("Data saved successfully. Do you want to continue scanning?");
+                                if(cont)
+                                    app.home.scanQRCode(true);
+                            }*/
+                        });
+                    }
+                if(i == meterReadings.length-1)
+                {
+                    alert("Data saved successfully");
+                    $("#trNewRead").hide();
+                }
+                    
+            }
+        });
+    }
+    catch(error)
+    {
+        alert(error);
+    }
+    //var splitMeterText = txtMeter.split(',');
+    //for(textd in splitMeterText)
+    //{
+        //alert(textd);
+    //}
+
+    //alert(txtQR + "   " + txtMeter);
+}
+
+    
 
 app.localization.registerView('home');
 
