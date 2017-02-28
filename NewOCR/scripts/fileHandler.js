@@ -114,7 +114,7 @@ fileHandler.bfrUpload = function(fileEntry)
         var ft = new FileTransfer(); 
         alert("Data upload started");
         //fileHandler.readFile(fileEntry);
-        ft.upload(fileURI, "http://api.marinecenterupload.com/MediaUploaderService.svc/SaveImage?location=TextFile", fileHandler.deleteFile, fileHandler.fail, options);
+        ft.upload(fileURI, "http://apiscan.erpbynet.com/MediaUploaderService.svc/SaveImage?location=TextFile", fileHandler.deleteFile, fileHandler.fail, options);
 }
 
 
