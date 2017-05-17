@@ -259,8 +259,11 @@ app.home.meterScan = function(isAnalog)
 app.home.energyConfig =  [
         "eyAiYW5kcm9pZElkZW50aWZpZXIiOiBbICJpby5hbnlsaW5lLmV4YW1wbGVzLmNvcmRvdmEiIF0sICJkZWJ1Z1JlcG9ydGluZyI6ICJvbiIsICJpb3NJZGVudGlmaWVyIjogWyAiaW8uYW55bGluZS5leGFtcGxlcy5jb3Jkb3ZhIiBdLCAibGljZW5zZUtleVZlcnNpb24iOiAyLCAibWFqb3JWZXJzaW9uIjogIjMiLCAicGluZ1JlcG9ydGluZyI6IHRydWUsICJwbGF0Zm9ybSI6IFsgImlPUyIsICJBbmRyb2lkIiBdLCAic2NvcGUiOiBbICJBTEwiIF0sICJzaG93V2F0ZXJtYXJrIjogdHJ1ZSwgInRvbGVyYW5jZURheXMiOiAxLCAidmFsaWQiOiAiMjAxOC0wMS0zMCIgfQowYnYrOVRqbWtxWkJxc1pSL3hmNnNaaWNSVzFOSkJ3aHFpdGdGb2xXMEp1VHlZWHR4RkpTVWhnYUE5SVcvYzlHCmxQdW9MUGVyYlVFdHBySzVSSXdqOGIzbjRvSmpWakpFakdhb2p3Umcxdzd4L1RrYnZJb3RyZXIvWkJRdEd5eSsKMGZObk1CTGQrRFY2WmhWNW1URDBUWmxobkIzdEhEcGN1WmNWSkVDNzc3WldHb0tWT1BzdzJyMWVkZVpMSGcyQwpqZG9lbnUwSGdXVjZzRFgxMUJwSVpLZDJHSzZ0TUxGaXJiYnJLbDBpR3FWZlBqbFd3TjM4VE1mMEtzM2xkVGM0ClV2VzZOcFlLVk41bGcxRU4rc2pWMHZIZDhUVVhZVmg0YmVEdFRveTVPRzRzRzlwQUd6WVZnWUI1UVNNNlZNWnAKc2p5SExzblBGQkRjWHVmRDZ4OUN2Zz09Cg==",
         {
-            "captureResolution": "720p",
-
+            "captureResolution": "1080",
+            "visualFeedback": {
+                    "style": "CONTOUR_RECT",
+                    "strokeWidth": 2,                    
+                },
             "cutout": {
                 "style": "rect",
                 "alignment": "top",
