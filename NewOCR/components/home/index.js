@@ -54,7 +54,7 @@ app.home.scanQRCode = function(disPrev)
         if(!disPrev)
         {
             if($("#qrResult").text().trim() != "")
-                disPrev = confirm("Lasted scanned results are not save. Do you want to discard those result?");
+                disPrev = confirm("Starting next set of readings. continue?");
         }
         if(!disPrev && $("#qrResult").text().trim() != "")
             return;
