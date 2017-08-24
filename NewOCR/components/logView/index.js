@@ -29,9 +29,14 @@ app.logView.showAllReadings = function(tx, allReading)
         var dynTh1 = document.createElement("th");
         dynTh1.innerHTML = "QR Code text";
         var dynTh2 = document.createElement("th");
-        dynTh2.innerHTML = "Meter readings";                
+        dynTh2.innerHTML = "Meter readings";            
+
+        var dynTh3 = document.createElement("th");
+        dynTh3.innerHTML = "Image";                  
+
         dynRowHead.appendChild(dynTh1);
         dynRowHead.appendChild(dynTh2);
+        dynRowHead.appendChild(dynTh3);
         dynTable.appendChild(dynRowHead);
 
         var readingsData = [];
@@ -54,6 +59,12 @@ app.logView.showAllReadings = function(tx, allReading)
                     dynReadTd1.setAttribute("style","border: 1px solid black;");
                     dynReadTd1.innerHTML = allReading.rows.item(i).reading;
                     dynTr.appendChild(dynReadTd1);
+
+                    var dynImageTd1 = document.createElement("td");
+                    dynImageTd1.setAttribute("style","border: 1px solid black;");                        
+                    dynImageTd1.innerHTML =  "<img src=\"" + allReading.rows.item(i).imagePath + "\" width=\"75%\" height=\"auto\"/>";
+                    dynTr.appendChild(dynImageTd1);
+
                     dynTable.appendChild(dynTr);
 
                     for(var j=i+1; j<i+5;j++)
@@ -64,7 +75,14 @@ app.logView.showAllReadings = function(tx, allReading)
                         
                         dynReadTd.innerHTML = allReading.rows.item(j).reading;
                         dynReadTr.appendChild(dynReadTd);
+
+                        var dynImageTd = document.createElement("td");
+                        dynImageTd.setAttribute("style","border: 1px solid black;");                        
+                        dynImageTd.innerHTML =  "<img src=\"" + allReading.rows.item(j).imagePath + "\" width=\"75%\" height=\"auto\"/>";
+                        dynReadTr.appendChild(dynImageTd);
+
                         dynTable.appendChild(dynReadTr); 
+                        
                     }
 
                 }

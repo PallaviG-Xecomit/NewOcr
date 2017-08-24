@@ -313,10 +313,16 @@ app.home.addResult = function()
 {    
     var currentText = $("#txtText").val();
     
+    var currentImage =  $("#txtImageSrc").val();
+
     var prevText = $("#output").html();
     
+    var prevImagePath = $("#outputImagePath").html();
+
     $("#output").html(prevText +"</br>"+currentText);
     
+    $("#outputImagePath").html(prevImagePath +"</br>"+currentImage);
+
     $("#trRdngHead").show();
     $("#trRdngVal").show();
 
@@ -387,6 +393,9 @@ app.home.scanSuccess = function (result) {
             + "<img src=\"" + result.imagePath + "\" width=\"100%\" height=\"auto\"/><br/>"
             + "</p>"
             + div.innerHTML;
+        $("#txtImageSrc").val(result.imagePath);    
+
+
         }
         catch(error)
         {
@@ -415,7 +424,9 @@ app.home.addToLog= function()
         //alert(finalJ);
         app.DALLocations.addResult(finalJ, function(addedLocId){
             var txtOutPut = $("#output").html();
+            var txtImageOutput = $("#outputImagePath").html();
             var meterReadings = txtOutPut.split("<br>");
+            var imageReaderPaths = txtImageOutput.split("<br>");
             //alert(meterReadings.length);
             var i=0;
             for(i=0; i< meterReadings.length; i++)
@@ -424,7 +435,7 @@ app.home.addToLog= function()
                     {
                         //alert(meterReadings[i]);
 
-                        app.DALMeterReadings.addResult(addedLocId, meterReadings[i], function(readingId){
+                        app.DALMeterReadings.addResult(addedLocId, meterReadings[i], imageReaderPaths[i], function(readingId){
                             
                             /*if(readingId == meterReadings.length - 1)
                             {

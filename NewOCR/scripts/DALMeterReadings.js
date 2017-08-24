@@ -14,7 +14,7 @@
         
         var db = app.DALMain.db; 
          
-        var tblDef = "CREATE TABLE IF NOT EXISTS MeterReadings(readingID INTEGER, locationID INTEGER, reading Text, addedOn INTEGER);";	
+        var tblDef = "CREATE TABLE IF NOT EXISTS MeterReadings(readingID INTEGER, locationID INTEGER, reading Text, imagePath Text, addedOn INTEGER);";	
                        
 
         db.transaction(function(tx) { 
@@ -35,7 +35,7 @@
         });        
     };
     
-    DALMeterReadings.addResult = function(locId, textRead, callBack) { 
+    DALMeterReadings.addResult = function(locId, textRead, imageReaderPaths, callBack) { 
         var db = app.DALMain.db;
         var addedOn = commonScriptManager.parseDateMMDDYY(new Date()); 
         //alert(addedOn);
@@ -53,8 +53,8 @@
                 }
                 //alert(maxId);
                 db.transaction(function(tx) { 
-                    tx.executeSql("INSERT INTO MeterReadings(readingID, locationID, reading, addedOn) VALUES (?, ?, ?, ?)", 
-                                [locId, maxId, textRead, addedOn], 
+                    tx.executeSql("INSERT INTO MeterReadings(readingID, locationID, reading, imagePath, addedOn) VALUES (?, ?, ?, ?, ?)", 
+                                [locId, maxId, textRead, imageReaderPaths, addedOn], 
                                 callBack(maxId), 
                                 DALMeterReadings.onError); 
                 },
